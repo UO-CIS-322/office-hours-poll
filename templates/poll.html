@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+
+<!-- Bootstrap requires the following three meta tags to appear first -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Office Hours Poll</title>
+
+<!-- Javascript and Cascading Style Sheets (css) libraries -->
+<!-- mostly from content delivery networks                 -->
+
+<!-- jquery; CDN load is usually quick because it's likely cached -->
+<script type="text/javascript"
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+
+<!-- Bootstrap stylesheet let's us have a 'responsive' layout; -->
+<!-- 12 column grid rearranges itself for smaller screens or windows. -->
+
+<!-- per http://getbootstrap.com/getting-started/  -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+ href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+ integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+  crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+ integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+ crossorigin="anonymous">
+</script>
+
+<!-- Our own css file.  Note how we can link directly here and not -->
+<!-- write any routing code in the Flask application. -->
+<link rel="stylesheet" href="/static/poll.css" />
+
+</head>
+
+<body>
+<div class="container">
+
+  <h2>Office Hours 399se</h2>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <!-- Mismatch, already found, etc. "flashed" from Python -->
+    {% for message in messages %}
+      <p class="message">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+
+
+<!-- We'll determine the days & hours for the poll in the Flask code.  
+  -- Should be a structure like
+  -- [ {"day":  "Monday", "periods":  [ "8:00-9:00", "9:00-10:00", ... ]}, 
+  --   { "day": "Tuesday", "periods": [ "9:30-11:00", "11-1:30", ... ]} ]
+  -->
+
+
+
+<p>30 minute periods. Uncheck times when you have class or other
+  conflicts. Please vote exactly once.
+</p>
+
+<form action="/_choose" method="POST">
+  <div class="row">
+    <div class="col-md-3">
+      <label for="name">Your name:</label>
+      <input name="name" id="name" width="15"
+             autofocus />
+     </div> <!-- column -->
+   </div> <!-- row -->
+     
+ {% for dayspec in g.choicegroups %}
+  {% set dayname = dayspec["day"] %}
+  <h2>{{ dayname }}</h2>
+  <div class="row">
+    {% for period in dayspec["periods"] %}
+       {% set element_id = dayname ~ period %}
+       <div class="col-md-1 col-sm-1 col-xs-2">
+	 <label for="{{element_id}}">{{period}}</label>
+	 <input type="checkbox" name="{{dayname}}" id="{{element_id}}"
+	        value="{{period}}" checked />
+       </div> <!-- column -->
+    {% endfor %}
+  </div> <!-- row -->
+  {% endfor %}
+
+  <div class="row">
+  <div class="col-md-2" col-xs-4>
+    <input type="submit" value="submit" />
+  </div> <!-- col -->
+  </div> <!-- row -->
+</form>
+
+
+
+
+ </div> <!-- container -->
+</body> </html>

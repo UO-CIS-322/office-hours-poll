@@ -1,0 +1,7 @@
+# Python flask project
+env  # virtual environment
+__pycache__
+*.pyc
+CONFIG.py
+nohup.out
+.DS_Store
