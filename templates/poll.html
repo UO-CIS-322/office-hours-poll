@@ -38,6 +38,10 @@
 <!-- write any routing code in the Flask application. -->
 <link rel="stylesheet" href="/static/poll.css" />
 
+<!-- And an icon for the tab and bookmark -->
+<link rel="shortcut icon" type="image/png" href="/static/img/checkbox.png" />
+
+
 </head>
 
 <body>
@@ -70,9 +74,9 @@
 
 <form action="/_choose" method="POST">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-8">
       <label for="name">Your name:</label>
-      <input name="name" id="name" width="15"
+      <input name="name" id="name" size="30"
              autofocus />
      </div> <!-- column -->
    </div> <!-- row -->
@@ -84,9 +88,9 @@
     {% for period in dayspec["periods"] %}
        {% set element_id = dayname ~ period %}
        <div class="col-md-1 col-sm-1 col-xs-2">
-	 <label for="{{element_id}}">{{period}}</label>
 	 <input type="checkbox" name="{{dayname}}" id="{{element_id}}"
 	        value="{{period}}" checked />
+	 <label for="{{element_id}}">{{period}}</label>
        </div> <!-- column -->
     {% endfor %}
   </div> <!-- row -->
