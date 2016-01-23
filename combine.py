@@ -38,7 +38,11 @@ except:
     sys.exit(1)
 
 for record in collection.find( { "kind": "office hours poll" } ):
-    print("***  {}".format(record["name"]))
+    name = record["name"]
+    print("***  {}".format(name))
+    if 'TEST' in name or 'test' in name:
+        print("    Skipping {}".format(record["name"]))
+        continue
     # del record['_id']
     # print(json.dumps(record, sort_keys=True, indent=4 ))
     times = record["times"]
