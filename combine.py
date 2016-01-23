@@ -37,12 +37,14 @@ except:
     print("Failure opening database.  Is Mongo running? Correct password?")
     sys.exit(1)
 
+record_count = 0
 for record in collection.find( { "kind": "office hours poll" } ):
     name = record["name"]
     print("***  {}".format(name))
     if 'TEST' in name or 'test' in name:
         print("    Skipping {}".format(record["name"]))
         continue
+    record_count += 1
     # del record['_id']
     # print(json.dumps(record, sort_keys=True, indent=4 ))
     times = record["times"]
@@ -51,8 +53,9 @@ for record in collection.find( { "kind": "office hours poll" } ):
         for period in periods:
             counts[dayname][period] += 1
 
+print("\n== {} responses ==".format(record_count))
 # Dump in order from CHOICES
-print("\n\n==SUMMARY==")
+print("\n==SUMMARY==")
 for day in CHOICES:
     dayname = day["day"]
     for period in day["periods"]:
