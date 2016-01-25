@@ -4,6 +4,8 @@ Dump the MongoDB database as text
 
 # Mongo database
 from pymongo import MongoClient
+from bson.json_util import dumps
+
 import CONFIG
 try: 
     dbclient = MongoClient(CONFIG.MONGO_URL)
@@ -24,5 +26,5 @@ except:
 
 records = [ ] 
 for record in collection.find( { "kind": "office hours poll" } ):
-    print(record)
+    print(dumps(record))
 
